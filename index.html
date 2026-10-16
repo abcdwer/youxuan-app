@@ -21,16 +21,9 @@ html,body{margin:0;padding:0;background:#E9ECF1;color:#14161A;
   display:flex;flex-direction:column;box-shadow:0 0 60px rgba(20,22,26,.16)}
 @media(min-width:431px){#app{min-height:100vh;border-left:1px solid #DDE2EA;border-right:1px solid #DDE2EA}}
 
-/* status bar */
-.sb{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px 0 30px;
-  font-size:15px;font-weight:600;flex:0 0 auto}
-.sb .r{display:flex;align-items:center;gap:6px}
-.batt{width:24px;height:12px;border:1.4px solid #14161A;border-radius:3.5px;position:relative;opacity:.85}
-.batt:after{content:"";position:absolute;right:-3.5px;top:3px;width:2px;height:4px;background:#14161A;border-radius:0 1px 1px 0}
-.batt i{position:absolute;left:1px;top:1px;bottom:1px;width:70%;background:#14161A;border-radius:1.5px}
 
 /* header */
-.hd{padding:6px 20px 12px;flex:0 0 auto}
+.hd{padding:calc(14px + env(safe-area-inset-top,0px)) 20px 12px;flex:0 0 auto}
 .hd .kick{font-size:11px;letter-spacing:.14em;color:#8A93A3;text-transform:uppercase;font-weight:700}
 .hd h1{margin:2px 0 0;font-size:26px;letter-spacing:-.02em;font-weight:800}
 .hd .sub{margin-top:6px;font-size:12.5px;color:#7A828F;line-height:1.5}
@@ -44,7 +37,6 @@ html,body{margin:0;padding:0;background:#E9ECF1;color:#14161A;
   color:#9AA1AC;font-size:10px;font-weight:600;cursor:pointer;transition:.15s}
 .tabs button.on{color:#0B6B5B}
 .tabs svg{width:22px;height:22px}
-.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:128px;height:5px;border-radius:3px;background:#14161A;opacity:.22;z-index:30;pointer-events:none}
 
 /* generic card */
 .c{background:#fff;border-radius:18px;padding:15px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,22,26,.05)}
@@ -80,7 +72,7 @@ html,body{margin:0;padding:0;background:#E9ECF1;color:#14161A;
   box-shadow:0 1px 2px rgba(20,22,26,.05);cursor:pointer;border:1px solid transparent;transition:.15s}
 .pr:active{transform:scale(.99)}
 .pr.sel{border-color:#0B6B5B;box-shadow:0 0 0 3px rgba(11,107,91,.1)}
-.th{width:52px;height:52px;border-radius:14px;flex:0 0 auto;display:grid;place-items:center;font-size:24px;background:#F2F5F8}
+.th{width:52px;height:52px;border-radius:14px;flex:0 0 auto;background:#F2F5F8 center/cover no-repeat}
 .pr .n{font-size:14.5px;font-weight:700;line-height:1.35;letter-spacing:-.01em}
 .pr .m{font-size:11.5px;color:#8A93A3;margin-top:3px;line-height:1.45}
 .pr .v{text-align:right;flex:0 0 auto}
@@ -175,17 +167,17 @@ textarea:focus{outline:none;border-color:#0B6B5B;background:#fff}
 
 /* 安装到主屏幕后：真实状态栏接管，隐藏模拟元素并让出安全区 */
 @media (display-mode: standalone){
-  .sb{display:none}
-  .hd{padding-top:calc(14px + env(safe-area-inset-top,0px))}
-  .homebar{display:none}
+  .hd{padding-top:calc(16px + env(safe-area-inset-top,0px))}
+  .tabs{padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
   #app{box-shadow:none;border:0}
   body{background:#F5F6F8}
 }
 /* 安装引导条 */
-.inst{display:none;position:fixed;top:0;left:0;right:0;z-index:60;background:#14161A;color:#fff;
-  padding:11px 16px;font-size:12.5px;line-height:1.5;text-align:center}
+.inst{display:none;background:#14161A;color:#fff;padding:10px 40px 10px 16px;font-size:12px;line-height:1.5;
+  text-align:center;position:relative;max-width:430px;margin:0 auto}
 .inst b{color:#7CC4B7}
 .inst.show{display:block}
+.inst #instx{position:absolute;right:14px;top:50%;transform:translateY(-50%);padding:6px;cursor:pointer}
 @media (display-mode:standalone){.inst{display:none!important}}
 </style>
 
@@ -194,10 +186,8 @@ textarea:focus{outline:none;border-color:#0B6B5B;background:#fff}
 <div class="inst" id="inst">还没有装到桌面？点底部工具栏的 <b>分享 ↑</b> → <b>添加到主屏幕</b>，就能全屏使用。
   <span style="opacity:.6;margin-left:6px" id="instx">✕</span></div>
 <div id="app">
-  <div class="sb"><span id="clock">10:14</span><span class="r"><svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M1 8.5h1.6V11H1zM4.1 6.6h1.6V11H4.1zM7.2 4.4h1.6V11H7.2zM10.3 2h1.6v9h-1.6zM13.4 .2h1.6v10.8h-1.6z" opacity=".9"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4.2A10 10 0 0 1 15 4.2M4 7A6.5 6.5 0 0 1 12 7"/><circle cx="8" cy="10.2" r="1" fill="currentColor" stroke="none"/></svg><span class="batt"><i></i></span></span></div>
   <div id="stage" style="display:flex;flex-direction:column;flex:1 1 auto;min-height:0"></div>
   <nav class="tabs" id="tabs"></nav>
-  <div class="homebar"></div>
   <div class="mask" id="mask"></div>
   <div class="sheet" id="sheet"></div>
 </div>
@@ -208,7 +198,7 @@ const NOW = new Date('2026-10-14T10:14:00+08:00');
 const CATS = {fruit:'水果生鲜', grain:'粮油主食', dairy:'乳品蛋', pet:'宠物用品'};
 
 const P = [
-{id:'p1',n:'阿克苏 冰糖心苹果 80mm 礼盒',b:'优果源农业',cat:'fruit',e:'🍎',price:39.9,w:2500,unit:'2.5kg/箱',
+{id:'p1',img:'img/apple.jpg',n:'阿克苏 冰糖心苹果 80mm 礼盒',b:'优果源农业',cat:'fruit',e:'🍎',price:39.9,w:2500,unit:'2.5kg/箱',
  origin:'新疆 阿克苏地区 温宿县 红旗坡 11号园',
  cost:{'原料收购':14.2,'分选加工':4.6,'包装耗材':2.4,'干线运输':6.8,'冷链落地':4.1,'平台服务费':3.6,'商家毛利':4.2},
  ing:[['红富士苹果','100%，无涂层无打蜡',100]],
@@ -226,10 +216,10 @@ const P = [
   {t:'09-30 20:10',h:'干线冷链',d:'冷藏车 新A·xxxxx，全程 0–4℃，42h 到西安',doc:['温控曲线','TC-25093088','2026-12-30','ok']},
   {t:'10-02 11:30',h:'西安中心仓',d:'入库 2.1℃，库温记录连续',doc:['入库单','RK-251002-19','2026-12-30','ok']},
   {t:'10-05 08:00',h:'落地配',d:'顺丰冷运，次日达，冰袋 2×500g',doc:['运单','SF-1042xxxxxxx','2026-11-05','exp']}],
- comp:{工商:'阿克苏优果源农业发展有限公司',成立:'2016-04',统一码:'91652901MAxxxxxx',社保:'在册 34 人 / 实缴 34 人',
+ comp:{工商:'阿克苏优果源农业发展有限公司（示例）',成立:'2016-04',统一码:'91652901MAxxxxxx',社保:'在册 34 人 / 实缴 34 人',
        季节工:'采摘计件 0.38 元/kg，日均 210 元（10 月实发台账公示）',涉诉:'2020 年 1 起合同纠纷（已结）',抽检:'近 24 个月 6 次抽检，全部合格'}},
 
-{id:'p2',n:'特仑苏 纯牛奶 250mL×12',b:'蒙牛乳业',cat:'dairy',e:'🥛',price:52.9,w:3000,unit:'3L/箱',
+{id:'p2',img:'img/milk.jpg',n:'牧场直供 纯牛奶 250mL×12',b:'草原牧歌乳业',cat:'dairy',e:'🥛',price:52.9,w:3000,unit:'3L/箱',
  origin:'内蒙古 呼和浩特 和林格尔 示范牧场',
  cost:{'原料奶':22.4,'加工包装':12.6,'包材利乐':7.3,'干线运输':4.2,'仓储':2.4,'渠道费用':9.8,'厂商毛利':11.0},
  ing:[['生牛乳','唯一配料，牧场当日挤奶',100]],
@@ -245,11 +235,11 @@ const P = [
   {t:'09-18 12:00',h:'收奶车',d:'保温罐车，4℃ 以下，28km 到厂',doc:['收奶单','SN-250918-77','2026-12-31','ok']},
   {t:'09-19 03:00',h:'UHT 灭菌灌装',d:'137℃ 4s，利乐无菌包',doc:['工艺记录','GY-250919-12','2026-12-31','ok']},
   {t:'09-22 09:00',h:'出厂检验',d:'GB 25190 全项合格',doc:['出厂报告','CC-250922-05','2026-12-31','ok']}],
- comp:{工商:'内蒙古蒙牛乳业（集团）股份有限公司',成立:'1999-08',统一码:'911500007012xxxxxx',社保:'在册 412 人 / 实缴 412 人',
+ comp:{工商:'内蒙古草原牧歌乳业（集团）股份有限公司',成立:'1999-08',统一码:'911500007012xxxxxx',社保:'在册 412 人 / 实缴 412 人',
        季节工:'不适用',涉诉:'近 3 年 2 起劳动争议（1 起调解结案）',抽检:'近 24 个月 8 次抽检，全部合格'},
  stale:true},
 
-{id:'p3',n:'网易严选 全价成猫粮 2kg',b:'严选宠物',cat:'pet',e:'🐱',price:119.0,w:2000,unit:'2kg/袋',
+{id:'p3',img:'img/catfood.jpg',n:'本味工坊 全价成猫粮 2kg',b:'本味工坊',cat:'pet',e:'🐱',price:119.0,w:2000,unit:'2kg/袋',
  origin:'山东 德州 山东派森代工',
  cost:{'肉粉原料':18.6,'谷物豆类和辅料':9.4,'加工膨化':7.2,'包装':5.6,'干线':4.8,'品牌与研发':14.2,'平台服务费':8.4,'商家毛利':14.8},
  ing:[['鲜鸡肉 68%','提供动物蛋白，第一顺位',68],['糙米 12%','碳水与纤维来源',12],['鸡油 6%','脂肪与必需脂肪酸',6],
@@ -267,11 +257,11 @@ const P = [
   {t:'09-02 10:00',h:'膨化 · 4号线',d:'批次 B250902-04，132℃',doc:['批次工艺单','GY-250902-04','2026-11-30','ok']},
   {t:'09-04 15:00',h:'留样送检',d:'每批次留样 200g 存 12 个月',doc:['留样台账','LY-250904-18','2026-11-30','ok']},
   {t:'09-10',h:'成品库 → 嘉兴仓',d:'常温陆运 940km',doc:['运输单据','YS-250910-62','2026-11-20','pend']}],
- comp:{工商:'杭州网易严选贸易有限公司 / 代工：山东派森生物科技',成立:'2016-05',统一码:'91330100MAxxxxxx',
+ comp:{工商:'杭州本味宠物用品有限公司（示例）/ 代工：山东 XX 生物科技',成立:'2016-05',统一码:'91330100MAxxxxxx',
        社保:'品牌方在册 22 人 / 实缴 22 人；代工厂 168 人',季节工:'代工厂计件 0.045 元/kg，夜班补贴 18 元/班',
        涉诉:'代工方 2024 年 1 起行政处罚（标签不规范，已整改）',抽检:'近 24 个月 4 次，1 次钙磷比临界（已复检合格）'}},
 
-{id:'p4',n:'五常稻花香2号 新米 5kg',b:'黑土地合作社',cat:'grain',e:'🌾',price:78.0,w:5000,unit:'5kg/袋',
+{id:'p4',img:'img/rice.jpg',n:'五常稻花香2号 新米 5kg',b:'黑土地合作社',cat:'grain',e:'🌾',price:78.0,w:5000,unit:'5kg/袋',
  origin:'黑龙江 哈尔滨 五常市 龙凤山乡',
  cost:{'稻谷收购':28.4,'碾磨抛光':8.6,'包装':4.2,'铁路干线':9.6,'分仓':5.4,'平台服务费':8.0,'商家毛利':13.8},
  ing:[['稻花香2号（五优稻4号）','100%，2026 新稻',100]],
@@ -289,7 +279,7 @@ const P = [
  comp:{工商:'五常市黑土地水稻种植专业合作社',成立:'2013-11',统一码:'93230184Lxxxxxx',社保:'固定 9 人 + 社员 61 户',
        季节工:'碾米季结 320 元/天（2026 实付记录公示）',涉诉:'无',抽检:'近 24 个月 3 次，全部合格'}},
 
-{id:'p5',n:'德青源 A级 鲜鸡蛋 30枚',b:'德青源',cat:'dairy',e:'🥚',price:29.9,w:1830,unit:'61g×30枚',
+{id:'p5',img:'img/eggs.jpg',n:'晨鸣农场 A级 鲜鸡蛋 30枚',b:'晨鸣农场',cat:'dairy',e:'🥚',price:29.9,w:1830,unit:'61g×30枚',
  origin:'安徽 合肥 长丰县鸡业基地',
  cost:{'饲料与养殖':11.2,'分级包装':4.8,'干线冷链':5.4,'落地配':4.2,'损耗':2.1,'平台服务费':2.4,'商家毛利':3.8},
  ing:[['鲜鸡蛋','单枚均重 61g，产蛋后 48h 内入库',100]],
@@ -303,11 +293,11 @@ const P = [
   {t:'10-06 11:00',h:'紫外线杀菌+冷藏',d:'清洗烘干，11–14℃ 存储',doc:['清洗记录','XJ-251006-09','2026-11-30','ok']},
   {t:'10-07',h:'喷码追溯',d:'蛋壳喷码 3406121234567',doc:['喷码样例','PM-251007-04','2026-11-30','ok']},
   {t:'10-09',h:'门店 / 前置仓',d:'货架期 21 天',doc:['到货验收','YH-251009-21','2026-10-20','exp']}],
- comp:{工商:'安徽德青源农业科技股份有限公司',成立:'2006-07',统一码:'913401007901xxxxxx',社保:'在册 386 人 / 实缴 371 人（差额 15 人为新入职，待补缴）',
+ comp:{工商:'安徽晨鸣农场农业科技股份有限公司',成立:'2006-07',统一码:'913401007901xxxxxx',社保:'在册 386 人 / 实缴 371 人（差额 15 人为新入职，待补缴）',
        季节工:'捕鸡工 日结 260 元 + 餐补',涉诉:'2023 年 1 起环保处罚（粪污处置，已整改）',抽检:'近 24 个月 9 次，1 次不合格（2025-03，已下架同批次）'}},
 
-{id:'p6',n:'农夫山泉 东方树叶 茉莉花茶 900mL',b:'农夫山泉',cat:'dairy',e:'🍵',price:6.5,w:900,unit:'瓶',
- origin:'广东 河源 万绿湖工厂',
+{id:'p6',img:'img/tea.jpg',n:'山与叶 无糖茉莉花茶 900mL',b:'山与叶',cat:'dairy',e:'🍵',price:6.5,w:900,unit:'瓶',
+ origin:'广东 河源 新安江工厂',
  cost:{'茶叶原料':1.1,'瓶身瓶盖标签':1.3,'加工与无菌灌装':0.9,'干线':0.6,'渠道':1.6,'厂商毛利':1.0},
  ing:[['水','—',88],['茉莉花茶 2.4g/L','真茶萃取，非茶粉',0.24],['维生素C','抗氧化护色',0.02],['碳酸氢钠','调节酸度',0.01]],
  add:[['糖','0 g','—'],['甜味剂（三氯蔗糖）','未添加','—'],['香精','未检出','—']],
@@ -317,20 +307,20 @@ const P = [
         'JCV-26-0990','2026-12-31']],
  chain:[
   {t:'2026-09 茶原料',h:'广西横县 茉莉花 + 浙江 绿茶',d:'花季窨制 3 次',doc:['采购台账','CG-2609-118','2026-12-31','ok']},
-  {t:'10-03',h:'广东万绿湖工厂灌装',d:'无菌冷灌装 line 4',doc:['批次记录','PC-251003-14','2027-04-02','ok']}],
- comp:{工商:'农夫山泉股份有限公司',成立:'1996-09',统一码:'913301001432xxxxxx',社保:'在册 1,240 人 / 实缴 1,233 人',季节工:'—',涉诉:'近 3 年无',抽检:'近 24 个月 5 次，全部合格'}},
+  {t:'10-03',h:'广东河源工厂无菌灌装',d:'无菌冷灌装 line 4',doc:['批次记录','PC-251003-14','2027-04-02','ok']}],
+ comp:{工商:'山与叶股份有限公司',成立:'1996-09',统一码:'913301001432xxxxxx',社保:'在册 1,240 人 / 实缴 1,233 人',季节工:'—',涉诉:'近 3 年无',抽检:'近 24 个月 5 次，全部合格'}},
 
-{id:'p7',n:'三元 极鲜 巴氏鲜牛奶 900mL',b:'三元食品',cat:'dairy',e:'🥛',price:13.9,w:900,unit:'瓶',
- origin:'北京 河北 三元自控牧场',cost:{'原料奶':6.4,'加工':2.1,'包材':1.6,'冷链':2.4,'渠道':2.0,'厂商毛利':1.4},
+{id:'p7',img:'img/freshmilk.jpg',n:'京郊牧场 巴氏鲜牛奶 900mL',b:'京郊牧场',cat:'dairy',e:'🥛',price:13.9,w:900,unit:'瓶',
+ origin:'北京 河北 京郊自控牧场',cost:{'原料奶':6.4,'加工':2.1,'包材':1.6,'冷链':2.4,'渠道':2.0,'厂商毛利':1.4},
  ing:[['生牛乳','唯一配料',100]],add:[],
  nutri:{热量:66,蛋白质:3.3,脂肪:3.6,碳水:4.8,钠:55,钙:110},
  tests:[['巴氏杀菌工艺','75℃ 15s','—','—','GB 19645-2010','JCV-26-1011','2026-10-30'],
         ['菌落总数','<8','≤1000','CFU/g','GB 19645-2010','JCV-26-1011','2026-10-30']],
  chain:[{t:'10-12 05:00',h:'挤奶',d:'当日 6h 内到厂',doc:['挤奶记录','JM-251012-B1','2026-10-30','ok']},
         {t:'10-12 20:00',h:'上架',d:'2–6℃，货架期 7 天',doc:['冷链交接','LJ-251012-33','2026-10-30','pend']}],
- comp:{工商:'北京三元食品股份有限公司',成立:'1997-10',统一码:'911100001000xxxxxx',社保:'在册 680 人 / 实缴 680 人',季节工:'—',涉诉:'近 3 年无',抽检:'近 24 个月 4 次，全部合格'}},
+ comp:{工商:'北京京郊牧场股份有限公司',成立:'1997-10',统一码:'911100001000xxxxxx',社保:'在册 680 人 / 实缴 680 人',季节工:'—',涉诉:'近 3 年无',抽检:'近 24 个月 4 次，全部合格'}},
 
-{id:'p8',n:'都乐 菲律宾 香蕉 1.5kg',b:'Dole 都乐',cat:'fruit',e:'🍌',price:15.9,w:1500,unit:'把',
+{id:'p8',img:'img/banana.jpg',n:'南洋鲜果 菲律宾香蕉 1.5kg',b:'南洋鲜果',cat:'fruit',e:'🍌',price:15.9,w:1500,unit:'把',
  origin:'菲律宾 棉兰老岛 布卡兰园',cost:{'果园采购':5.2,'海运':2.6,'关税与报关':2.1,'催熟':1.6,'落地配':2.2,'平台服务费':1.1,'商家毛利':1.1},
  ing:[['香蕉','100%',100]],add:[['保鲜处理','1-甲基环丙烯（1-MCP）','抑制乙烯的采后处理，属 GB 2760 允许使用；本批次用量 0.5ppm，已公示']],
  nutri:{热量:93,蛋白质:1.4,脂肪:0.2,碳水:22.8,钠:1,糖:17.2},
@@ -342,9 +332,9 @@ const P = [
   {t:'09-16',h:'海运冷藏',d:'13.5℃ 恒温，12 天航程',doc:['船期温控','SEA-250916','2026-11-08','ok']},
   {t:'09-28',h:'上海口岸报关',d:'海关查验 + CIQ 抽检',doc:['入境货物检验检疫证明','CIQ-26-0918-77','2026-11-08','ok']},
   {t:'10-05',h:'催熟库',d:'22℃ 乙烯催熟 48h',doc:['催熟记录','CS-251005-06','2026-11-08','pend']}],
- comp:{工商:'都乐食品中国有限公司',成立:'2003-03',统一码:'913100007109xxxxxx',社保:'在册 96 人 / 实缴 96 人',季节工:'催熟库计件 0.06 元/kg（境外园区适用当地法规）',涉诉:'无',抽检:'近 24 个月 6 次，1 次噻虫胺临界'}},
+ comp:{工商:'南洋鲜果食品（中国）有限公司（示例）',成立:'2003-03',统一码:'913100007109xxxxxx',社保:'在册 96 人 / 实缴 96 人',季节工:'催熟库计件 0.06 元/kg（境外园区适用当地法规）',涉诉:'无',抽检:'近 24 个月 6 次，1 次噻虫胺临界'}},
 
-{id:'p9',n:'十月稻田 东北黑米 1kg',b:'十月稻田',cat:'grain',e:'🍚',price:16.9,w:1000,unit:'袋',
+{id:'p9',img:'img/blackrice.jpg',n:'黑土农社 东北黑米 1kg',b:'黑土农社',cat:'grain',e:'🍚',price:16.9,w:1000,unit:'袋',
  origin:'黑龙江 绥化',cost:{'原粮':6.2,'加工':2.1,'包装':1.4,'干线':2.2,'平台服务费':2.0,'商家毛利':3.0},
  ing:[['黑米','全谷物，含麸皮',100]],add:[],
  nutri:{热量:348,蛋白质:9.4,脂肪:2.5,碳水:72.3,钠:7,花青素:148},
@@ -352,10 +342,10 @@ const P = [
         ['花青素含量','148','—','mg/100g','实测','JCV-26-0780','2026-09-30']],
  chain:[{t:'09-20',h:'收割',d:'—',doc:['收购单','SG-250920-05','2026-09-30','exp']},
         {t:'09-26',h:'加工',d:'低温碾磨保留麸皮',doc:['加工记录','JG-250926-12','2026-09-30','exp']}],
- comp:{工商:'十月稻田（黑龙江）农业发展有限公司',成立:'2018-06',统一码:'91231200MAxxxxxx',社保:'在册 41 人 / 实缴 41 人',季节工:'—',涉诉:'无',抽检:'近 24 个月 2 次，全部合格'},
+ comp:{工商:'黑土农社（黑龙江）农业发展有限公司',成立:'2018-06',统一码:'91231200MAxxxxxx',社保:'在册 41 人 / 实缴 41 人',季节工:'—',涉诉:'无',抽检:'近 24 个月 2 次，全部合格'},
  stale:true},
 
-{id:'p10',n:'素力高 金素 高蛋白猫粮 5.4kg',b:'Solid Gold',cat:'pet',e:'🐟',price:398.0,w:5400,unit:'袋',
+{id:'p10',img:'img/catfood2.jpg',n:'金穗 高蛋白全阶段猫粮 5.4kg',b:'金穗',cat:'pet',e:'🐟',price:398.0,w:5400,unit:'袋',
  origin:'美国 进口 / 国内分装',cost:{'原料':52.4,'海外加工':31.2,'海运+报关':46.8,'保税仓':14.2,'国内分销':62.4,'平台服务费':28.6,'商家毛利':92.4},
  ing:[['鸡肉粉 42%','脱水肉源，蛋白主要来源',42],['大米 18%','碳水',18],['鸡肉 12%','鲜肉',12],
       ['鲱鱼粉 8%','Omega-3',8],['豌豆纤维 5%','纤维',5],['牛磺酸 0.15%','必需氨基酸',0.15],
@@ -370,7 +360,7 @@ const P = [
   {t:'08-02',h:'海运到港 上海',d:'30 天航程',doc:['提单','BL-260802','2026-12-31','ok']},
   {t:'08-20',h:'保税仓入库',d:'—',doc:['海关单','CST-260820','2026-12-31','ok']},
   {t:'09-25',h:'国内分装',d:'分装方：上海 XX 贸易',doc:['分装协议','FZ-260925','2026-11-30','pend']}],
- comp:{工商:'进口商 上海素金宠物用品贸易有限公司',成立:'2019-02',统一码:'91310115MAxxxxxx',社保:'在册 12 人 / 实缴 12 人',
+ comp:{工商:'进口商 上海金穗宠物用品贸易公司（示例）',成立:'2019-02',统一码:'91310115MAxxxxxx',社保:'在册 12 人 / 实缴 12 人',
        季节工:'分装工 计件 0.9 元/kg，无夜班补贴（工会反馈已记录）',涉诉:'2025 年 1 起广告违法处罚（“治疗”字样，罚 2 万）',抽检:'近 24 个月 3 次，1 次益生菌活菌数低于标称'}}
 ];
 
@@ -420,7 +410,7 @@ function renderRank(){
    ${list.map(p=>{const e=expOf(p.tests[0][6]);return `
    <div class="pr ${sel.includes(p.id)?'sel':''}" data-p="${p.id}">
      <div class="ck ${sel.includes(p.id)?'on':''}" data-ck="${p.id}">${sel.includes(p.id)?'✓':''}</div>
-     <div class="th">${p.e}</div>
+     <div class="th" style="background-image:url(${p.img});background-size:cover;background-position:center"></div>
      <div style="flex:1;min-width:0">
        <div class="n">${esc(p.n)}</div>
        <div class="m">${esc(p.b)} · ${per100(p).toFixed(2)}元/100g · 单据 ${Math.round(op(p)*100)}%</div>
@@ -446,7 +436,7 @@ function renderDetail(){
  <div class="hd"><button class="back" data-act="back">‹ 透明榜单</button>
    <div class="row" style="align-items:flex-start">
      <div style="flex:1"><div class="kick">${CATS[p.cat]} · ${esc(p.origin)}</div><h1 style="font-size:21px">${esc(p.n)}</h1></div>
-     <div class="th" style="width:46px;height:46px;font-size:22px">${p.e}</div>
+     <div class="th" style="width:56px;height:56px;background-image:url(${p.img});background-size:cover;background-position:center"></div>
    </div>
    <div class="sub">${esc(p.b)} · ${yuan(p.price)} / ${p.unit} · <b style="color:#0B6B5B">${per100(p).toFixed(2)} 元/100g</b></div>
    <div class="stack" style="margin-top:8px">
@@ -531,7 +521,7 @@ function renderCmp(){
  return `<div class="hd"><div class="kick">Compare</div><h1>并排对比</h1><div class="sub">绿色为同行更低/更好，橙色为更高。指标全部客观，判定归你。</div></div>
  <div class="body fade"><div class="c" style="overflow-x:auto;padding:14px 14px 6px">
    <table style="min-width:${items.length*110+96}px"><thead><tr><th style="width:96px">维度</th>
-   ${items.map(p=>`<th style="width:110px"><div style="font-size:16px">${p.e}</div><div style="font-weight:750;color:#14161A;font-size:10.5px;line-height:1.3;margin-top:3px">${esc(p.b)}</div></th>`).join('')}
+   ${items.map(p=>`<th style="width:110px"><div class="th" style="width:34px;height:34px;border-radius:9px;margin:0 auto 4px;background-image:url(${p.img});background-size:cover;background-position:center"></div><div style="font-weight:750;color:#14161A;font-size:10.5px;line-height:1.3;margin-top:3px">${esc(p.b)}</div></th>`).join('')}
    </tr></thead><tbody>
    ${rows.map(([l,f,cmp])=>{const vals=items.map(f);let best=null;
      if(cmp){const nums=vals.map(v=>parseFloat(String(v).replace(/[^0-9.]/g,'')));const m=Math.min(...nums);best=nums.map(n=>n===m)}
@@ -690,7 +680,6 @@ try{
      $('#inst').classList.remove('show');localStorage.setItem('yx_hide_inst','1')})},200);
  }
 }catch(e){}
-setInterval(()=>{const n=new Date();$('#clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')},1000);
 draw();
 </script>
 </body>
